@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>InstaSave - Instagram Downloader</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.8em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.85em;
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: #f5f5f5;
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        input {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            min-width: 0;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+        .btn:disabled { opacity: 0.6; }
+
+        .btn-save {
+            width: 100%;
+            padding: 15px;
+            background: #4CAF50;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .msg {
+            padding: 12px;
+            border-radius: 10px;
+            margin: 12px 0;
+            font-size: 0.85em;
+            text-align: center;
+            display: none;
+        }
+
+        .msg.show { display: block; }
+        .msg.error { color: #e74c3c; background: #fdf0ef; }
+        .msg.success { color: #27ae60; background: #edfaf2; }
+        .msg.info { color: #2c3e50; background: #ebf5fb; }
+
+        .preview {
+            margin-top: 15px;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .preview.show { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .media-box {
+            border-radius: 15px;
+            overflow: hidden;
+            background: #000;
+            position: relative;
+        }
+
+        .media-box img, .media-box video {
+            width: 100%;
+            max-height: 450px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .dp-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show { display: block; }
+
+        .spinner {
+            width: 35px;
+            height: 35px;
+            margin: 0 auto 10px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .feat {
+            padding: 10px 5px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            font-size: 0.75em;
+        }
+
+        .feat span { font-size: 1.5em; display: block; margin-bottom: 4px; }
+
+        .ad-box {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            color: #999;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 0.75em;
+        }
+
+        footer a { color: #667eea; text-decoration: none; margin: 0 8px; }
+
+        @media (max-width: 400px) {
+            .container { padding: 15px 12px; }
+            .tab { font-size: 11px; padding: 10px 6px; }
+            .features { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📸 InstaSave</h1>
+        <p class="subtitle">Download Photos, Reels & Profile Pictures</p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('media')">📱 Media</button>
+            <button class="tab" onclick="switchTab('dp')">👤 DP</button>
+            <button class="tab" onclick="switchTab('guide')">📖 Guide</button>
+        </div>
+
+        <!-- Media Panel -->
+        <div class="panel active" id="mediaPanel">
+            <div class="input-group">
+                <input type="text" id="mediaUrl" placeholder="Paste Instagram link..." autocomplete="off">
+                <button class="btn" id="mediaBtn" onclick="fetchMedia()">Download</button>
+            </div>
+            <div class="loading" id="mediaLoading"><div class="spinner"></div><p>Fetching...</p></div>
+            <div class="msg" id="mediaMsg"></div>
+            <div class="preview" id="mediaPreview">
+                <div class="media-box">
+                    <img id="mediaImg" src="" alt="Preview">
+                    <video id="mediaVideo" controls playsinline></video>
+                    <div class="badge" id="mediaBadge"></div>
+                </div>
+                <button class="btn btn-save" id="saveMediaBtn" onclick="saveMedia()">💾 Save to Device</button>
+            </div>
+        </div>
+
+        <!-- DP Panel -->
+        <div class="panel" id="dpPanel">
+            <div class="input-group">
+                <input type="text" id="dpUser" placeholder="Enter username..." autocomplete="off">
+                <button class="btn" id="dpBtn" onclick="fetchDP()">Get DP</button>
+            </div>
+            <div class="loading" id="dpLoading"><div class="spinner"></div><p>Fetching...</p></div>
+            <div class="msg" id="dpMsg"></div>
+            <div class="preview" id="dpPreview" style="text-align:center;">
+                <img id="dpImg" src="" alt="DP" class="dp-img">
+                <p style="margin:10px 0;font-weight:600;" id="dpName"></p>
+                <button class="btn btn-save" onclick="saveDP()">💾 Download DP</button>
+            </div>
+        </div>
+
+        <!-- Guide Panel -->
+        <div class="panel" id="guidePanel">
+            <div style="background:#f8f9fa;border-radius:12px;padding:15px;">
+                <h3 style="text-align:center;margin-bottom:15px;">📖 How to Use</h3>
+                <div style="margin-bottom:12px;padding:10px;background:white;border-radius:10px;">
+                    <strong>📱 Media:</strong> Copy Instagram link → Paste → Download → Save
+                </div>
+                <div style="margin-bottom:12px;padding:10px;background:white;border-radius:10px;">
+                    <strong>👤 DP:</strong> Copy username → Enter → Get DP → Download
+                </div>
+                <div style="background:#fff3cd;padding:10px;border-radius:8px;font-size:0.8em;color:#856404;">
+                    ⚠️ Public accounts only. Personal use only.
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feat"><span>🖼️</span>Photos</div>
+            <div class="feat"><span>🎬</span>Reels</div>
+            <div class="feat"><span>👤</span>DP</div>
+            <div class="feat"><span>📱</span>Mobile</div>
+        </div>
+
+        <div class="ad-box">📢 Advertisement Space</div>
+
+        <footer>
+            <p>Not affiliated with Instagram</p>
+            <a href="#" onclick="alert('No data collected')">Privacy</a>
+            <a href="#" onclick="alert('Personal use only')">Terms</a>
+        </footer>
+    </div>
+
+    <script>
+        const API = window.location.origin;
+
+        function switchTab(tab) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tab + 'Panel').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // ============ MEDIA ============
+        let mediaData = null;
+
+        async function fetchMedia() {
+            const url = document.getElementById('mediaUrl').value.trim();
+            if (!url) return showMsg('mediaMsg', 'Paste a link first', 'error');
+            if (!url.includes('instagram.com')) return showMsg('mediaMsg', 'Invalid URL', 'error');
+
+            resetMedia();
+            toggleLoading('mediaLoading', true);
+            document.getElementById('mediaBtn').disabled = true;
+            showMsg('mediaMsg', '🔍 Fetching from server...', 'info');
+
+            try {
+                const res = await fetch(`${API}/api/extract`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+
+                const result = await res.json();
+
+                if (result.success && result.data) {
+                    mediaData = result.data;
+                    showPreview(result.data);
+                    showMsg('mediaMsg', '✅ Ready! Tap Save to download', 'success');
+                } else {
+                    throw new Error(result.error || 'Failed');
+                }
+            } catch (e) {
+                showMsg('mediaMsg', '❌ ' + (e.message || 'Could not fetch media'), 'error');
+            } finally {
+                toggleLoading('mediaLoading', false);
+                document.getElementById('mediaBtn').disabled = false;
+            }
+        }
+
+        function showPreview(data) {
+            const preview = document.getElementById('mediaPreview');
+            const img = document.getElementById('mediaImg');
+            const video = document.getElementById('mediaVideo');
+            const badge = document.getElementById('mediaBadge');
+
+            preview.classList.add('show');
+
+            if (data.videoUrl || data.isVideo) {
+                img.style.display = 'none';
+                video.style.display = 'block';
+                video.src = data.videoUrl;
+                badge.textContent = '🎬 Video';
+            } else {
+                video.style.display = 'none';
+                img.style.display = 'block';
+                img.src = data.imageUrl;
+                badge.textContent = '📷 Photo';
+            }
+
+            preview.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function saveMedia() {
+            if (!mediaData) return;
+            const url = mediaData.videoUrl || mediaData.imageUrl;
+            const ext = mediaData.isVideo ? 'mp4' : 'jpg';
+            downloadFile(url, `instasave_${Date.now()}.${ext}`);
+            showMsg('mediaMsg', '✅ Downloading...', 'success');
+        }
+
+        function resetMedia() {
+            document.getElementById('mediaPreview').classList.remove('show');
+            document.getElementById('mediaImg').style.display = 'none';
+            document.getElementById('mediaVideo').style.display = 'none';
+            hideMsg('mediaMsg');
+            mediaData = null;
+        }
+
+        // ============ DP ============
+        let dpUrl = null;
+
+        async function fetchDP() {
+            const username = document.getElementById('dpUser').value.trim().replace('@', '').split('/')[0];
+            if (!username) return showMsg('dpMsg', 'Enter a username', 'error');
+
+            resetDP();
+            toggleLoading('dpLoading', true);
+            document.getElementById('dpBtn').disabled = true;
+            showMsg('dpMsg', '🔍 Fetching...', 'info');
+
+            try {
+                const res = await fetch(`${API}/api/dp/${username}`);
+                const result = await res.json();
+
+                if (result.success && result.url) {
+                    dpUrl = result.url;
+                    document.getElementById('dpImg').src = result.url;
+                    document.getElementById('dpName').textContent = '@' + result.username;
+                    document.getElementById('dpPreview').classList.add('show');
+                    document.getElementById('dpPreview').scrollIntoView({ behavior: 'smooth' });
+                    showMsg('dpMsg', '✅ DP loaded! (' + result.quality + ' quality)', 'success');
+                } else {
+                    throw new Error(result.error || 'Failed');
+                }
+            } catch (e) {
+                showMsg('dpMsg', '❌ Account not found or private', 'error');
+            } finally {
+                toggleLoading('dpLoading', false);
+                document.getElementById('dpBtn').disabled = false;
+            }
+        }
+
+        function saveDP() {
+            if (!dpUrl) return;
+            downloadFile(dpUrl, `dp_${document.getElementById('dpUser').value.trim().replace('@', '')}.jpg`);
+            showMsg('dpMsg', '✅ Downloading...', 'success');
+        }
+
+        function resetDP() {
+            document.getElementById('dpPreview').classList.remove('show');
+            hideMsg('dpMsg');
+            dpUrl = null;
+        }
+
+        // ============ HELPERS ============
+        function showMsg(id, text, type) {
+            const el = document.getElementById(id);
+            el.textContent = text;
+            el.className = 'msg ' + type + ' show';
+        }
+
+        function hideMsg(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        function toggleLoading(id, show) {
+            document.getElementById(id).classList.toggle('show', show);
+        }
+
+        function downloadFile(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Auto-detect paste
+        document.getElementById('mediaUrl').addEventListener('paste', () => {
+            setTimeout(() => {
+                if (document.getElementById('mediaUrl').value.trim()) fetchMedia();
+            }, 500);
+        });
+
+        document.getElementById('mediaUrl').addEventListener('keypress', e => {
+            if (e.key === 'Enter') fetchMedia();
+        });
+
+        document.getElementById('dpUser').addEventListener('keypress', e => {
+            if (e.key === 'Enter') fetchDP();
+        });
+    </script>
+</body>
+</html>
