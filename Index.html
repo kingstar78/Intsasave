@@ -3,49 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>InstaSave - Instagram Downloader</title>
+    
+    <title>InstaGet - Free Instagram Downloader | Save Photos, Videos, Reels & DP</title>
+    <meta name="description" content="InstaGet is a free Instagram downloader. Download photos, videos, reels, and profile pictures in HD quality. No login required. Fast, free, and easy.">
+    <meta name="keywords" content="instagram downloader, instagram photo download, instagram video download, instagram reel download, instagram dp download, instaget">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="InstaGet - Instagram Downloader">
+    <meta property="og:description" content="Free Instagram downloader - Save photos, videos, reels & DP">
+    <meta name="theme-color" content="#E1306C">
+    <link rel="canonical" href="https://your-render-url.onrender.com/">
+    
     <style>
+        :root {
+            --pink: #E1306C;
+            --purple: #833AB4;
+            --orange: #F77737;
+            --gradient: linear-gradient(135deg, #833AB4, #E1306C, #F77737);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #fafafa;
             min-height: 100vh;
-            padding: 15px;
+            color: #1e293b;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 20px;
+            font-size: 1.4em;
+            font-weight: 800;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
             max-width: 500px;
             margin: 0 auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 16px;
         }
 
-        h1 {
+        .hero {
+            background: var(--gradient);
+            color: white;
             text-align: center;
-            font-size: 1.8em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
+            padding: 30px 20px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 30px rgba(131, 58, 180, 0.3);
         }
 
-        .subtitle {
-            text-align: center;
-            color: #666;
-            font-size: 0.85em;
-            margin-bottom: 20px;
+        .hero h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .hero p { opacity: 0.95; font-size: 0.9em; }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            margin-bottom: 16px;
         }
 
         .tabs {
             display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-            background: #f5f5f5;
+            background: #f1f5f9;
             padding: 4px;
             border-radius: 12px;
+            margin-bottom: 18px;
         }
 
         .tab {
@@ -56,123 +91,91 @@
             border-radius: 10px;
             font-weight: 600;
             font-size: 13px;
-            color: #666;
             cursor: pointer;
-            transition: all 0.3s;
+            color: #64748b;
+            transition: all 0.2s;
         }
 
         .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: white;
+            color: var(--pink);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
-        .panel { display: none; }
+        .panel { display: none; animation: fade 0.3s; }
         .panel.active { display: block; }
 
-        .input-group {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        input {
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .input-row input {
             flex: 1;
             padding: 14px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 15px;
             min-width: 0;
+            transition: border-color 0.2s;
         }
 
-        input:focus {
+        .input-row input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--pink);
         }
 
         .btn {
             padding: 14px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient);
             color: white;
             border: none;
             border-radius: 10px;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 14px;
             cursor: pointer;
             white-space: nowrap;
-            font-size: 14px;
+            transition: all 0.2s;
         }
 
+        .btn:active { transform: scale(0.96); }
         .btn:disabled { opacity: 0.6; }
 
         .btn-save {
             width: 100%;
             padding: 15px;
-            background: #4CAF50;
-            font-size: 16px;
-            margin-top: 10px;
+            background: #10b981;
+            margin-top: 12px;
+            display: none;
+            font-size: 15px;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
         }
+
+        .btn-save.show { display: block; }
 
         .msg {
             padding: 12px;
-            border-radius: 10px;
-            margin: 12px 0;
+            border-radius: 8px;
+            margin: 10px 0;
             font-size: 0.85em;
-            text-align: center;
             display: none;
+            text-align: center;
         }
 
         .msg.show { display: block; }
-        .msg.error { color: #e74c3c; background: #fdf0ef; }
-        .msg.success { color: #27ae60; background: #edfaf2; }
-        .msg.info { color: #2c3e50; background: #ebf5fb; }
-
-        .preview {
-            margin-top: 15px;
-            display: none;
-            animation: fadeIn 0.3s;
-        }
-
-        .preview.show { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .media-box {
-            border-radius: 15px;
-            overflow: hidden;
-            background: #000;
-            position: relative;
-        }
-
-        .media-box img, .media-box video {
-            width: 100%;
-            max-height: 450px;
-            object-fit: contain;
-            display: block;
-        }
-
-        .badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-        }
-
-        .dp-img {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            display: block;
-            margin: 0 auto;
-        }
+        .msg.error { background: #fef2f2; color: #991b1b; }
+        .msg.success { background: #f0fdf4; color: #166534; }
+        .msg.info { background: #eff6ff; color: #1e40af; }
 
         .loading {
             display: none;
@@ -183,307 +186,330 @@
         .loading.show { display: block; }
 
         .spinner {
-            width: 35px;
-            height: 35px;
-            margin: 0 auto 10px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            width: 36px;
+            height: 36px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--pink);
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 10px;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        .preview {
+            display: none;
+            margin-top: 12px;
+        }
+
+        .preview.show { display: block; animation: fade 0.3s; }
+
+        .preview img, .preview video {
+            width: 100%;
+            border-radius: 12px;
+            max-height: 400px;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .dp-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            display: block;
+            margin: 0 auto;
+        }
 
         .features {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 8px;
-            margin: 20px 0;
-            text-align: center;
+            margin: 16px 0;
         }
 
         .feat {
-            padding: 10px 5px;
-            border-radius: 10px;
-            background: #f8f9fa;
+            text-align: center;
+            padding: 14px 6px;
+            background: white;
+            border-radius: 12px;
             font-size: 0.75em;
+            font-weight: 600;
+            color: #64748b;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .feat span { font-size: 1.5em; display: block; margin-bottom: 4px; }
+        .feat span { font-size: 1.8em; display: block; margin-bottom: 4px; }
 
         .ad-box {
-            margin-top: 20px;
-            padding: 15px;
-            border: 2px dashed #e0e0e0;
-            border-radius: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
             text-align: center;
-            color: #999;
+            margin-bottom: 16px;
+            border: 2px dashed #e2e8f0;
+            color: #94a3b8;
+            font-size: 0.8em;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        footer {
+        .footer {
             text-align: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-            color: #999;
+            padding: 16px;
+            color: #94a3b8;
             font-size: 0.75em;
         }
 
-        footer a { color: #667eea; text-decoration: none; margin: 0 8px; }
+        .footer a {
+            color: var(--pink);
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        .steps {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .step {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.85em;
+        }
+
+        .step-num {
+            background: var(--gradient);
+            color: white;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
 
         @media (max-width: 400px) {
-            .container { padding: 15px 12px; }
-            .tab { font-size: 11px; padding: 10px 6px; }
+            .input-row { flex-direction: column; }
+            .btn { width: 100%; }
             .features { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+    <nav class="navbar"><span>📸 InstaGet</span></nav>
+
     <div class="container">
-        <h1>📸 InstaSave</h1>
-        <p class="subtitle">Download Photos, Reels & Profile Pictures</p>
-
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('media')">📱 Media</button>
-            <button class="tab" onclick="switchTab('dp')">👤 DP</button>
-            <button class="tab" onclick="switchTab('guide')">📖 Guide</button>
+        <div class="hero">
+            <h1>Instagram Downloader</h1>
+            <p>Save Photos • Videos • Reels • DP in HD</p>
         </div>
 
-        <!-- Media Panel -->
-        <div class="panel active" id="mediaPanel">
-            <div class="input-group">
-                <input type="text" id="mediaUrl" placeholder="Paste Instagram link..." autocomplete="off">
-                <button class="btn" id="mediaBtn" onclick="fetchMedia()">Download</button>
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('post')">📱 Posts</button>
+                <button class="tab" onclick="switchTab('dp')">👤 DP</button>
+                <button class="tab" onclick="switchTab('guide')">📖 Guide</button>
             </div>
-            <div class="loading" id="mediaLoading"><div class="spinner"></div><p>Fetching...</p></div>
-            <div class="msg" id="mediaMsg"></div>
-            <div class="preview" id="mediaPreview">
-                <div class="media-box">
-                    <img id="mediaImg" src="" alt="Preview">
-                    <video id="mediaVideo" controls playsinline></video>
-                    <div class="badge" id="mediaBadge"></div>
-                </div>
-                <button class="btn btn-save" id="saveMediaBtn" onclick="saveMedia()">💾 Save to Device</button>
-            </div>
-        </div>
 
-        <!-- DP Panel -->
-        <div class="panel" id="dpPanel">
-            <div class="input-group">
-                <input type="text" id="dpUser" placeholder="Enter username..." autocomplete="off">
-                <button class="btn" id="dpBtn" onclick="fetchDP()">Get DP</button>
+            <div class="panel active" id="postPanel">
+                <div class="input-row">
+                    <input type="text" id="postUrl" placeholder="Paste Instagram link here..." autocomplete="off">
+                    <button class="btn" id="postBtn" onclick="downloadPost()">Download</button>
+                </div>
+                <div class="loading" id="postLoading"><div class="spinner"></div><p style="color:#64748b;">Fetching from server...</p></div>
+                <div class="msg" id="postMsg"></div>
+                <div class="preview" id="postPreview">
+                    <div id="postContent"></div>
+                    <button class="btn-save" id="postSave" onclick="savePost()">💾 Save to Device</button>
+                </div>
             </div>
-            <div class="loading" id="dpLoading"><div class="spinner"></div><p>Fetching...</p></div>
-            <div class="msg" id="dpMsg"></div>
-            <div class="preview" id="dpPreview" style="text-align:center;">
-                <img id="dpImg" src="" alt="DP" class="dp-img">
-                <p style="margin:10px 0;font-weight:600;" id="dpName"></p>
-                <button class="btn btn-save" onclick="saveDP()">💾 Download DP</button>
-            </div>
-        </div>
 
-        <!-- Guide Panel -->
-        <div class="panel" id="guidePanel">
-            <div style="background:#f8f9fa;border-radius:12px;padding:15px;">
-                <h3 style="text-align:center;margin-bottom:15px;">📖 How to Use</h3>
-                <div style="margin-bottom:12px;padding:10px;background:white;border-radius:10px;">
-                    <strong>📱 Media:</strong> Copy Instagram link → Paste → Download → Save
+            <div class="panel" id="dpPanel">
+                <div class="input-row">
+                    <input type="text" id="dpUser" placeholder="Enter username (without @)" autocomplete="off">
+                    <button class="btn" id="dpBtn" onclick="getDP()">Get DP</button>
                 </div>
-                <div style="margin-bottom:12px;padding:10px;background:white;border-radius:10px;">
-                    <strong>👤 DP:</strong> Copy username → Enter → Get DP → Download
+                <div class="loading" id="dpLoading"><div class="spinner"></div><p style="color:#64748b;">Loading profile...</p></div>
+                <div class="msg" id="dpMsg"></div>
+                <div class="preview" id="dpPreview">
+                    <img id="dpImg" class="dp-img" src="" alt="Profile Picture">
+                    <p style="text-align:center;margin:10px 0;font-weight:bold;" id="dpName"></p>
+                    <p style="text-align:center;color:#64748b;font-size:0.85em;" id="dpBio"></p>
+                    <button class="btn-save show" onclick="saveDP()">💾 Save DP</button>
                 </div>
-                <div style="background:#fff3cd;padding:10px;border-radius:8px;font-size:0.8em;color:#856404;">
-                    ⚠️ Public accounts only. Personal use only.
+            </div>
+
+            <div class="panel" id="guidePanel">
+                <div class="steps">
+                    <h3 style="text-align:center;margin-bottom:12px;">📖 How to Use</h3>
+                    <div class="step"><span class="step-num">1</span><div><strong>Copy Instagram Link</strong><p>Open Instagram → Find post/reel → Tap Share → Copy Link</p></div></div>
+                    <div class="step"><span class="step-num">2</span><div><strong>Paste in Posts Tab</strong><p>Come to InstaGet → Posts tab → Paste link → Tap Download</p></div></div>
+                    <div class="step"><span class="step-num">3</span><div><strong>Save to Device</strong><p>Preview shows → Tap Save to Device → File downloads</p></div></div>
+                    <p style="margin-top:10px;color:#64748b;font-size:0.8em;">⚠️ Only public accounts work. Personal use only.</p>
                 </div>
             </div>
         </div>
 
         <div class="features">
-            <div class="feat"><span>🖼️</span>Photos</div>
+            <div class="feat"><span>🖼️</span>HD Photos</div>
             <div class="feat"><span>🎬</span>Reels</div>
             <div class="feat"><span>👤</span>DP</div>
-            <div class="feat"><span>📱</span>Mobile</div>
+            <div class="feat"><span>⚡</span>Fast</div>
         </div>
 
-        <div class="ad-box">📢 Advertisement Space</div>
+        <div class="ad-box">
+            📢 Advertisement
+            <!-- Paste Google AdSense code here -->
+        </div>
 
-        <footer>
-            <p>Not affiliated with Instagram</p>
-            <a href="#" onclick="alert('No data collected')">Privacy</a>
-            <a href="#" onclick="alert('Personal use only')">Terms</a>
+        <footer class="footer">
+            <a href="/privacy">Privacy</a> |
+            <a href="/terms">Terms</a> |
+            <a href="/contact">Contact</a>
+            <p style="margin-top:8px;">© 2024 InstaGet. Not affiliated with Instagram.</p>
         </footer>
     </div>
 
     <script>
-        const API = window.location.origin;
-
-        function switchTab(tab) {
+        function switchTab(name) {
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(tab + 'Panel').classList.add('active');
-            event.target.classList.add('active');
+            document.getElementById(name + 'Panel').classList.add('active');
+            const tabs = document.querySelectorAll('.tab');
+            if (name === 'post') tabs[0].classList.add('active');
+            if (name === 'dp') tabs[1].classList.add('active');
+            if (name === 'guide') tabs[2].classList.add('active');
         }
 
-        // ============ MEDIA ============
-        let mediaData = null;
+        function showMsg(id, text, type) {
+            const el = document.getElementById(id);
+            el.textContent = text;
+            el.className = 'msg ' + type + ' show';
+            setTimeout(() => el.classList.remove('show'), 5000);
+        }
 
-        async function fetchMedia() {
-            const url = document.getElementById('mediaUrl').value.trim();
-            if (!url) return showMsg('mediaMsg', 'Paste a link first', 'error');
-            if (!url.includes('instagram.com')) return showMsg('mediaMsg', 'Invalid URL', 'error');
+        function downloadFile(url, name) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => document.body.removeChild(a), 300);
+        }
 
-            resetMedia();
-            toggleLoading('mediaLoading', true);
-            document.getElementById('mediaBtn').disabled = true;
-            showMsg('mediaMsg', '🔍 Fetching from server...', 'info');
+        // Post Downloader
+        let postData = null;
+
+        async function downloadPost() {
+            const url = document.getElementById('postUrl').value.trim();
+            document.getElementById('postPreview').classList.remove('show');
+            document.getElementById('postSave').classList.remove('show');
+            document.getElementById('postContent').innerHTML = '';
+            document.getElementById('postMsg').classList.remove('show');
+            postData = null;
+
+            if (!url) return showMsg('postMsg', 'Please paste a link', 'error');
+            if (!url.includes('instagram.com')) return showMsg('postMsg', 'Invalid URL', 'error');
+
+            document.getElementById('postLoading').classList.add('show');
+            document.getElementById('postBtn').disabled = true;
+            showMsg('postMsg', '🔍 Server processing...', 'info');
 
             try {
-                const res = await fetch(`${API}/api/extract`, {
+                const res = await fetch('/api/download', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url })
                 });
-
-                const result = await res.json();
-
-                if (result.success && result.data) {
-                    mediaData = result.data;
-                    showPreview(result.data);
-                    showMsg('mediaMsg', '✅ Ready! Tap Save to download', 'success');
-                } else {
-                    throw new Error(result.error || 'Failed');
-                }
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
+                
+                postData = data;
+                document.getElementById('postContent').innerHTML = data.type === 'video'
+                    ? `<video src="${data.url}" controls playsinline style="width:100%;border-radius:12px;max-height:400px;"></video>`
+                    : `<img src="${data.url}" alt="Instagram post" style="width:100%;border-radius:12px;max-height:400px;">`;
+                
+                document.getElementById('postPreview').classList.add('show');
+                document.getElementById('postSave').classList.add('show');
+                showMsg('postMsg', '✅ Ready! Tap Save to download', 'success');
             } catch (e) {
-                showMsg('mediaMsg', '❌ ' + (e.message || 'Could not fetch media'), 'error');
+                showMsg('postMsg', '❌ ' + e.message, 'error');
             } finally {
-                toggleLoading('mediaLoading', false);
-                document.getElementById('mediaBtn').disabled = false;
+                document.getElementById('postLoading').classList.remove('show');
+                document.getElementById('postBtn').disabled = false;
             }
         }
 
-        function showPreview(data) {
-            const preview = document.getElementById('mediaPreview');
-            const img = document.getElementById('mediaImg');
-            const video = document.getElementById('mediaVideo');
-            const badge = document.getElementById('mediaBadge');
-
-            preview.classList.add('show');
-
-            if (data.videoUrl || data.isVideo) {
-                img.style.display = 'none';
-                video.style.display = 'block';
-                video.src = data.videoUrl;
-                badge.textContent = '🎬 Video';
-            } else {
-                video.style.display = 'none';
-                img.style.display = 'block';
-                img.src = data.imageUrl;
-                badge.textContent = '📷 Photo';
-            }
-
-            preview.scrollIntoView({ behavior: 'smooth' });
+        function savePost() {
+            if (!postData) return;
+            downloadFile(postData.url, `instaget_${Date.now()}.${postData.type === 'video' ? 'mp4' : 'jpg'}`);
+            showMsg('postMsg', '✅ Downloading! Check your files.', 'success');
         }
 
-        function saveMedia() {
-            if (!mediaData) return;
-            const url = mediaData.videoUrl || mediaData.imageUrl;
-            const ext = mediaData.isVideo ? 'mp4' : 'jpg';
-            downloadFile(url, `instasave_${Date.now()}.${ext}`);
-            showMsg('mediaMsg', '✅ Downloading...', 'success');
-        }
+        // DP Downloader
+        let dpData = null;
 
-        function resetMedia() {
-            document.getElementById('mediaPreview').classList.remove('show');
-            document.getElementById('mediaImg').style.display = 'none';
-            document.getElementById('mediaVideo').style.display = 'none';
-            hideMsg('mediaMsg');
-            mediaData = null;
-        }
-
-        // ============ DP ============
-        let dpUrl = null;
-
-        async function fetchDP() {
+        async function getDP() {
             const username = document.getElementById('dpUser').value.trim().replace('@', '').split('/')[0];
+            document.getElementById('dpPreview').classList.remove('show');
+            document.getElementById('dpMsg').classList.remove('show');
+            dpData = null;
+
             if (!username) return showMsg('dpMsg', 'Enter a username', 'error');
 
-            resetDP();
-            toggleLoading('dpLoading', true);
+            document.getElementById('dpLoading').classList.add('show');
             document.getElementById('dpBtn').disabled = true;
-            showMsg('dpMsg', '🔍 Fetching...', 'info');
+            showMsg('dpMsg', '🔍 Fetching profile...', 'info');
 
             try {
-                const res = await fetch(`${API}/api/dp/${username}`);
-                const result = await res.json();
-
-                if (result.success && result.url) {
-                    dpUrl = result.url;
-                    document.getElementById('dpImg').src = result.url;
-                    document.getElementById('dpName').textContent = '@' + result.username;
-                    document.getElementById('dpPreview').classList.add('show');
-                    document.getElementById('dpPreview').scrollIntoView({ behavior: 'smooth' });
-                    showMsg('dpMsg', '✅ DP loaded! (' + result.quality + ' quality)', 'success');
-                } else {
-                    throw new Error(result.error || 'Failed');
-                }
+                const res = await fetch(`/api/dp/${username}`);
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
+                
+                dpData = data;
+                document.getElementById('dpImg').src = data.url;
+                document.getElementById('dpName').textContent = data.fullName || '@' + username;
+                document.getElementById('dpBio').textContent = data.bio || '';
+                document.getElementById('dpPreview').classList.add('show');
+                showMsg('dpMsg', '✅ Profile picture ready!', 'success');
             } catch (e) {
-                showMsg('dpMsg', '❌ Account not found or private', 'error');
+                showMsg('dpMsg', '❌ Account not found', 'error');
             } finally {
-                toggleLoading('dpLoading', false);
+                document.getElementById('dpLoading').classList.remove('show');
                 document.getElementById('dpBtn').disabled = false;
             }
         }
 
         function saveDP() {
-            if (!dpUrl) return;
-            downloadFile(dpUrl, `dp_${document.getElementById('dpUser').value.trim().replace('@', '')}.jpg`);
-            showMsg('dpMsg', '✅ Downloading...', 'success');
+            if (!dpData) return;
+            downloadFile(dpData.url, `dp_${Date.now()}.jpg`);
+            showMsg('dpMsg', '✅ Downloading!', 'success');
         }
 
-        function resetDP() {
-            document.getElementById('dpPreview').classList.remove('show');
-            hideMsg('dpMsg');
-            dpUrl = null;
-        }
-
-        // ============ HELPERS ============
-        function showMsg(id, text, type) {
-            const el = document.getElementById(id);
-            el.textContent = text;
-            el.className = 'msg ' + type + ' show';
-        }
-
-        function hideMsg(id) {
-            document.getElementById(id).classList.remove('show');
-        }
-
-        function toggleLoading(id, show) {
-            document.getElementById(id).classList.toggle('show', show);
-        }
-
-        function downloadFile(url, filename) {
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        // Auto-detect paste
-        document.getElementById('mediaUrl').addEventListener('paste', () => {
-            setTimeout(() => {
-                if (document.getElementById('mediaUrl').value.trim()) fetchMedia();
-            }, 500);
+        // Events
+        document.getElementById('postUrl').addEventListener('paste', function() {
+            setTimeout(() => { if (this.value.trim()) downloadPost(); }, 500);
         });
-
-        document.getElementById('mediaUrl').addEventListener('keypress', e => {
-            if (e.key === 'Enter') fetchMedia();
+        document.getElementById('postUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') downloadPost();
         });
-
-        document.getElementById('dpUser').addEventListener('keypress', e => {
-            if (e.key === 'Enter') fetchDP();
+        document.getElementById('dpUser').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') getDP();
         });
     </script>
 </body>
